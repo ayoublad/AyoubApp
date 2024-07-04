@@ -14,7 +14,7 @@ welcome_template = '''
 <body>
     <h1>Bienvenue au jeu de devinette, {{ name }}!</h1>
     <p>Devinez un nombre entre 1 et 100. Vous avez jusqu'à 10 tentatives.</p>
-    <form action="/guess" method="post">
+    <form action="/game" method="post">
         <label for="guess">Votre devinette:</label>
         <input type="number" id="guess" name="guess">
         <input type="submit" value="Soumettre">
