@@ -1,0 +1,20 @@
+[
+    {
+        "GroupName": "default",
+        "GroupId": "sg-0ff971f1896bbb3b8",
+        "IpPermissions": [
+            {
+                "IpProtocol": "-1",
+                "IpRanges": [],
+                "Ipv6Ranges": [],
+                "PrefixListIds": [],
+                "UserIdGroupPairs": [
+                    {
+                        "GroupId": "sg-0ff971f1896bbb3b8",
+                        "UserId": "891377337000"
+                    }
+                ]
+            }
+        ]
+    }
+]

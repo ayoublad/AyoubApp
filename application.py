@@ -90,4 +90,4 @@ def game():
     return render_template_string(welcome_template, name=session['name'], message="")
 
 if __name__ == "__main__":
-    application.run(debug=True, host='0.0.0.0', port=8000)
+    application.run()
