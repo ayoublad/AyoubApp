@@ -12,7 +12,7 @@ welcome_template = '''
     <title>Bienvenue au jeu du nombre mystere</title>
 </head>
 <body>
-    <h1>Bienvenue au jeu du nombre mystere, {{ name }}!</h1>
+    <h1>Bienvenue {{name}} au jeu du nombre mystere !</h1>
     <p>Devinez un nombre entre 1 et 100. Vous avez jusqu'à 10 tentatives.</p>
     <form action="/game" method="post">
         <label for="guess">Entrez un nombre entre 1 et 100:</label>
