@@ -12,7 +12,8 @@ welcome_template = '''
     <title>Bienvenue au jeu du nombre mystere</title>
 </head>
 <body>
-    <h1>Bienvenue {{name}} au jeu du nombre mystere !</h1>
+    <h1>Bienvenue {{name}} !</h1>
+    <h2>On se retrouve jeu du nombre mystere !</h2>
     <p>Devinez un nombre entre 1 et 100. Vous avez jusqu'à 10 tentatives.</p>
     <form action="/game" method="post">
         <label for="guess">Entrez un nombre entre 1 et 100:</label>
@@ -74,8 +75,11 @@ def game():
         else:
             return render_template_string(result_template, result="Félicitations! Vous avez deviné le bon nombre.", number=session['number'], attempts=session['attempts'])
         
-        if session['attempts'] == 7:
-            return render_template_string(result_template, result="Allez {{name}} il te reste encore 3 tentatives", number=session['number'], attempts=session['attempts'])
+        if session['attempts'] == 5:
+            message += f" Qu'est-ce qu'il se passe {session['name']} ? C'est plus difficile que prévu ?"
+        
+        if session['attempts'] == 9:
+            message += f"La seule chose qu'on pourra dire, c'est que {session['name']} a fait preuve de perseverance."
 
         if session['attempts'] >= 10:
             return render_template_string(result_template, result="Perdu! Vous avez épuisé vos tentatives.", number=session['number'], attempts=session['attempts'])
