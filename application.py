@@ -9,15 +9,15 @@ application.secret_key = 'supersecretkey'  # Needed to use sessions
 welcome_template = '''
 <html>
 <head>
-    <title>Bienvenue au jeu de devinette</title>
+    <title>Bienvenue au jeu du nombre mystere</title>
 </head>
 <body>
-    <h1>Bienvenue au jeu de devinette, {{ name }}!</h1>
+    <h1>Bienvenue au jeu du nombre mystere, {{ name }}!</h1>
     <p>Devinez un nombre entre 1 et 100. Vous avez jusqu'à 10 tentatives.</p>
     <form action="/game" method="post">
-        <label for="guess">Votre devinette:</label>
+        <label for="guess">Entrez un nombre entre 1 et 100:</label>
         <input type="number" id="guess" name="guess">
-        <input type="submit" value="Soumettre">
+        <input type="submit" value="Envoyer">
     </form>
     <p>{{ message }}</p>
 </body>
@@ -48,12 +48,12 @@ def index():
     return '''
         <html>
         <head>
-            <title>Jeu de devinette</title>
+            <title>Jeu du nombre mystere</title>
         </head>
         <body>
-            <h1>Entrez votre nom pour commencer le jeu:</h1>
+            <h1>Entrez votre prenom pour commencer le jeu:</h1>
             <form method="post">
-                <label for="name">Nom:</label>
+                <label for="name">Prenom:</label>
                 <input type="text" id="name" name="name">
                 <input type="submit" value="Commencer le jeu">
             </form>
@@ -73,6 +73,9 @@ def game():
             message = "Trop grand!"
         else:
             return render_template_string(result_template, result="Félicitations! Vous avez deviné le bon nombre.", number=session['number'], attempts=session['attempts'])
+        
+        if session['attempts'] == 7:
+            return render_template_string(result_template, result="Allez {{name}} il te reste encore 3 tentatives", number=session['number'], attempts=session['attempts'])
 
         if session['attempts'] >= 10:
             return render_template_string(result_template, result="Perdu! Vous avez épuisé vos tentatives.", number=session['number'], attempts=session['attempts'])
