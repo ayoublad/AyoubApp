@@ -9,7 +9,7 @@ application.secret_key = 'supersecretkey'  # Needed to use sessions
 welcome_template = '''
 <html>
 <head>
-    <title>Jeu du nombre mystere</title>
+    <title>eu du nombre mystere</title>
 </head>
 <body>
     <h1>Bienvenue {{name}} !</h1>
@@ -52,7 +52,8 @@ def index():
             <title>Jeu du nombre mystere</title>
         </head>
         <body>
-            <h1>Entrez votre prénom pour commencer le jeu:</h1>
+            <h1>Bonjour cher employé de Capgemini</h1>
+            <h2>Entrez votre prénom pour commencer le jeu:</h2>
             <form method="post">
                 <label for="name">Prénom:</label>
                 <input type="text" id="name" name="name">
