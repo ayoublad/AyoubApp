@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template_string, redirect, url_for, session
+from flask import Flask, request, render_template_string, redirect, url_for, session # type: ignore
 import random
 
 # Initialize the Flask application
@@ -9,7 +9,7 @@ application.secret_key = 'supersecretkey'  # Needed to use sessions
 welcome_template = '''
 <html>
 <head>
-    <title>Bienvenue au jeu du nombre mystere</title>
+    <title>Jeu du nombre mystere</title>
 </head>
 <body>
     <h1>Bienvenue {{name}} !</h1>
