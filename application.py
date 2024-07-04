@@ -13,7 +13,7 @@ welcome_template = '''
 </head>
 <body>
     <h1>Bienvenue {{name}} !</h1>
-    <h2>Pret à deviner le nombre mystere !</h2>
+    <h2>Prêt à deviner le nombre mystère !</h2>
     <p>Devinez un nombre entre 1 et 100. Vous avez jusqu'à 10 tentatives.</p>
     <form action="/game" method="post">
         <label for="guess">Entrez un nombre entre 1 et 100:</label>
@@ -52,9 +52,9 @@ def index():
             <title>Jeu du nombre mystere</title>
         </head>
         <body>
-            <h1>Entrez votre prenom pour commencer le jeu:</h1>
+            <h1>Entrez votre prénom pour commencer le jeu:</h1>
             <form method="post">
-                <label for="name">Prenom:</label>
+                <label for="name">Prénom:</label>
                 <input type="text" id="name" name="name">
                 <input type="submit" value="Commencer le jeu">
             </form>
@@ -79,10 +79,10 @@ def game():
             message += f" Qu'est-ce qu'il se passe {session['name']} ? C'est plus difficile que prévu ?"
         
         if session['attempts'] == 9:
-            message += f"La seule chose qu'on pourra dire, c'est que {session['name']} a fait preuve de perseverance."
+            message += f" La seule chose qu'on pourra dire, c'est que {session['name']} a fait preuve de perseverance."
 
         if session['attempts'] >= 10:
-            return render_template_string(result_template, result="Perdu! Vous avez épuisé vos tentatives.", number=session['number'], attempts=session['attempts'])
+            return render_template_string(result_template, result="Perdu! Vous avez épuisé toutes vos tentatives.", number=session['number'], attempts=session['attempts'])
 
         return render_template_string(welcome_template, name=session['name'], message=message)
 
