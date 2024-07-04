@@ -1,35 +1,85 @@
-from flask import Flask
+from flask import Flask, request, render_template_string, redirect, url_for, session
+import random
 
-# print a nice greeting.
-def say_hello(username = "Capgemini"):
-    return '<p>Hello %s!</p>\n' % username
-
-# some bits of text for the page.
-header_text = '''
-    <html>\n<head> <title>EB Flask Test</title> </head>\n<body>'''
-instructions = '''
-    <p><em>Hint</em>: This is a RESTful web service! Append a username
-    to the URL (for example: <code>/Thelonious</code>) to say hello to
-    someone specific.</p>\n'''
-home_link = '<p><a href="/">Back</a></p>\n'
-footer_text = '</body>\n</html>'
-
-# EB looks for an 'application' callable by default.
+# Initialize the Flask application
 application = Flask(__name__)
+application.secret_key = 'supersecretkey'  # Needed to use sessions
 
-# add a rule for the index page.
-application.add_url_rule('/', 'index', (lambda: header_text +
-    say_hello() + instructions + footer_text))
+# HTML templates
+welcome_template = '''
+<html>
+<head>
+    <title>Bienvenue au jeu de devinette</title>
+</head>
+<body>
+    <h1>Bienvenue au jeu de devinette, {{ name }}!</h1>
+    <p>Devinez un nombre entre 1 et 100. Vous avez jusqu'à 10 tentatives.</p>
+    <form action="/guess" method="post">
+        <label for="guess">Votre devinette:</label>
+        <input type="number" id="guess" name="guess">
+        <input type="submit" value="Soumettre">
+    </form>
+    <p>{{ message }}</p>
+</body>
+</html>
+'''
 
-# add a rule when the page is accessed with a name appended to the site
-# URL.
-application.add_url_rule('/<username>', 'hello', (lambda username:
-    header_text + say_hello(username) + home_link + footer_text))
+result_template = '''
+<html>
+<head>
+    <title>Résultat</title>
+</head>
+<body>
+    <h1>{{ result }}</h1>
+    <p>Le nombre était: {{ number }}</p>
+    <p>Vous avez utilisé {{ attempts }} tentatives.</p>
+    <a href="/">Recommencer le jeu</a>
+</body>
+</html>
+'''
 
-# run the app.
+@application.route('/', methods=['GET', 'POST'])
+def index():
+    if request.method == 'POST':
+        session['name'] = request.form['name']
+        session['number'] = random.randint(1, 100)
+        session['attempts'] = 0
+        return redirect(url_for('game'))
+    return '''
+        <html>
+        <head>
+            <title>Jeu de devinette</title>
+        </head>
+        <body>
+            <h1>Entrez votre nom pour commencer le jeu:</h1>
+            <form method="post">
+                <label for="name">Nom:</label>
+                <input type="text" id="name" name="name">
+                <input type="submit" value="Commencer le jeu">
+            </form>
+        </body>
+        </html>
+    '''
+
+@application.route('/game', methods=['GET', 'POST'])
+def game():
+    if request.method == 'POST':
+        guess = int(request.form['guess'])
+        session['attempts'] += 1
+
+        if guess < session['number']:
+            message = "Trop petit!"
+        elif guess > session['number']:
+            message = "Trop grand!"
+        else:
+            return render_template_string(result_template, result="Félicitations! Vous avez deviné le bon nombre.", number=session['number'], attempts=session['attempts'])
+
+        if session['attempts'] >= 10:
+            return render_template_string(result_template, result="Perdu! Vous avez épuisé vos tentatives.", number=session['number'], attempts=session['attempts'])
+
+        return render_template_string(welcome_template, name=session['name'], message=message)
+
+    return render_template_string(welcome_template, name=session['name'], message="")
+
 if __name__ == "__main__":
-    # Setting debug to True enables debug output. This line should be
-    # removed before deploying a production app.
-    application.debug = True
-    #application.run(host='0.0.0.0', port=8000)
-    application.run()
+    application.run(debug=True, host='0.0.0.0', port=8000)
